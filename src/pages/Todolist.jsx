@@ -4,11 +4,12 @@ import useUserStore from "../store/UserStore.js";
 
 function Todolist() {
   // State
-  const { id } = useUserStore();
+  const { id, token } = useUserStore();
   const { userId } = id;
   const [todo, setTodo] = useState([]);
-
+  const [postTodo, setPostTodo] = useState({ content: "" });
   // get and post
+
   async function getData(userId) {
     const resp = await axios.get(
       `https://drive-accessible-pictures-send.trycloudflare.com/todos/${userId}`,
@@ -20,30 +21,75 @@ function Todolist() {
     getData(userId);
   }, []);
 
-//   style
-const insideStyle="w-1/2 h-full flex justify-between flex-col"
+  //   add
+  const hdlSubmit = async (evt) => {
+    evt.preventDefault();
+
+    try {
+      // console.log("test")
+      const postResp = await axios.post(
+        `https://drive-accessible-pictures-send.trycloudflare.com/todos/${userId}`,
+        postTodo,
+        {
+          headers: {
+            Authorization: `Bearer ${token.token}`,
+          },
+        },
+      );
+      getData(userId);
+    } catch (error) {
+      console.log("error");
+    }
+  };
+
+  const hdlChange = (evt) => {
+    const { name, value } = evt.target;
+    setPostTodo((prev) => ({ ...prev, [name]: value }));
+    console.log(postTodo);
+  };
+
+  //   style
+  const insideStyle = "w-full h-full flex justify-between flex-col text-xl";
 
   return (
     <>
       <div>Todolist</div>
-      {todo.map((item) => (
-        <div
-          key={item.id}
-          className="border rounded-xl flex gap-3 m-5 h-30 flex-wrap flex-col p-5"
-        >
-          <div className={insideStyle}>
-            <p>Content : {item.content}</p>
-            <p>Status : {item.isdone}</p>
-          </div>
-          <div className={insideStyle}>
+
+      <form onSubmit={hdlSubmit}>
+        <input
+          className="border rounded-xl p-1 m-1"
+          type="text"
+          name="content"
+          value={postTodo.content}
+          placeholder="Content"
+          onChange={hdlChange}
+        />
+        <button className="border rounded-xl w-15 p-1">Add</button>
+      </form>
+      <div className="flex flex-wrap">
+        {todo.map((item) => (
+          <div
+            key={item.id}
+            className="border rounded-xl flex gap-3 m-5 h-30 flex-row p-5 min-w-120 max-w-120"
+          >
+            <div className={insideStyle}>
+              <p>Content : {item.content}</p>
+              <p>
+                Status :{" "}
+                <span
+                  className={`${item.isdone ? "text-green-500" : "text-red-500"}`}
+                >{`${item.isdone ? "Done" : "Not Done"}`}</span>
+              </p>
+            </div>
+            {/* <div className={insideStyle}>
             <p>Create Date : {item.createdAt}</p>
             <p>Update Date : {item.updatedAt}</p>
+          </div> */}
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </>
   );
 }
 
 export default Todolist;
-

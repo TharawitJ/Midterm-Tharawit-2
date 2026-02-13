@@ -8,9 +8,7 @@ const useUserStore = create(
         setId:(id)=>set({id}),
         token:null,
         setToken:(token)=>set({token}),
-        // todoList:[],
-        // setTodoList:(todoList)=>set({todoList}),
-        logOut:()=> set({token:null},{id:null}, {todoList:[]})
+        logOut:()=> set({token:null},{id:null})
     })),{name:'user-store'}
 )
 export default useUserStore
