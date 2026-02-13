@@ -4,8 +4,8 @@ import {persist} from "zustand/middleware"
 //create setToken
 const useUserStore = create(
     persist((set,get) => ({
-        id:null,
-        setId:(id)=>set({id}),
+        objUserId:null,
+        setId:(objUserId)=>set({objUserId}),
         token:null,
         setToken:(token)=>set({token}),
         logOut:()=> set({token:null},{id:null})

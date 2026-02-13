@@ -4,8 +4,8 @@ import useUserStore from "../store/UserStore.js";
 
 function Todolist() {
   // State
-  const { id, token } = useUserStore();
-  const { userId } = id;
+  const { objUserId, token } = useUserStore();
+  const { userId } = objUserId;
   const [todo, setTodo] = useState([]);
   const [postTodo, setPostTodo] = useState({ content: "" });
   // get and post
@@ -41,11 +41,20 @@ function Todolist() {
       console.log("error");
     }
   };
-
+  // track input change
   const hdlChange = (evt) => {
     const { name, value } = evt.target;
     setPostTodo((prev) => ({ ...prev, [name]: value }));
-    console.log(postTodo);
+    // console.log(postTodo);
+  };
+  //   Delete
+  const hdlDelete = async (evt, itemId) => {
+    evt.preventDefault();
+    console.log(itemId)
+    const resp = await axios.delete(
+      `https://drive-accessible-pictures-send.trycloudflare.com/todos/${userId}/${itemId}`,
+    );
+    getData(userId);
   };
 
   //   style
@@ -70,7 +79,7 @@ function Todolist() {
         {todo.map((item) => (
           <div
             key={item.id}
-            className="border rounded-xl flex gap-3 m-5 h-30 flex-row p-5 min-w-120 max-w-120"
+            className="border rounded-xl flex gap-3 m-5 h-30 flex-row p-5 min-w-120 max-w-120 justify-between"
           >
             <div className={insideStyle}>
               <p>Content : {item.content}</p>
@@ -80,11 +89,13 @@ function Todolist() {
                   className={`${item.isdone ? "text-green-500" : "text-red-500"}`}
                 >{`${item.isdone ? "Done" : "Not Done"}`}</span>
               </p>
+              <button
+                className="border rounded-xl w-23 bg-gray-200 m-auto"
+                onClick={(evt) => hdlDelete(evt, item.id)}
+              >
+                Delete
+              </button>
             </div>
-            {/* <div className={insideStyle}>
-            <p>Create Date : {item.createdAt}</p>
-            <p>Update Date : {item.updatedAt}</p>
-          </div> */}
           </div>
         ))}
       </div>
