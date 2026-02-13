@@ -50,7 +50,7 @@ function Todolist() {
   //   Delete
   const hdlDelete = async (evt, itemId) => {
     evt.preventDefault();
-    console.log(itemId)
+    console.log(itemId);
     const resp = await axios.delete(
       `https://drive-accessible-pictures-send.trycloudflare.com/todos/${userId}/${itemId}`,
     );
@@ -62,11 +62,16 @@ function Todolist() {
 
   return (
     <>
-      <div>Todolist</div>
+      <div className="text-4xl m-5 flex flex-col justify-center items-center">
+        Todolist
+      </div>
 
-      <form onSubmit={hdlSubmit}>
+      <form
+        onSubmit={hdlSubmit}
+        className="flex flex-col justify-center items-center gap-2"
+      >
         <input
-          className="border rounded-xl p-1 m-1"
+          className="border rounded-xl p-1 m-1 text-center"
           type="text"
           name="content"
           value={postTodo.content}
@@ -89,12 +94,17 @@ function Todolist() {
                   className={`${item.isdone ? "text-green-500" : "text-red-500"}`}
                 >{`${item.isdone ? "Done" : "Not Done"}`}</span>
               </p>
-              <button
-                className="border rounded-xl w-23 bg-gray-200 m-auto"
-                onClick={(evt) => hdlDelete(evt, item.id)}
-              >
-                Delete
-              </button>
+              <div className="flex justify-center gap-1">
+                <button className="border rounded-xl w-23 bg-gray-200">
+                  Edit
+                </button>
+                <button
+                  className="border rounded-xl w-23 bg-gray-200"
+                  onClick={(evt) => hdlDelete(evt, item.id)}
+                >
+                  Delete
+                </button>
+              </div>
             </div>
           </div>
         ))}

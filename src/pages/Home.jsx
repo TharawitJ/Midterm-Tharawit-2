@@ -1,17 +1,25 @@
-import {useNavigate} from "react-router"
+import { useNavigate } from "react-router";
 
 export default function Home() {
-    const btnStyle = "border rounded-xl p-1"
-    const navigate = useNavigate()
+  const btnStyle = "underline text-blue-600";
+  const navigate = useNavigate();
   return (
-    <>
-      <p>Welcome to todo list web app</p>
+    <div className="flex justify-center flex-col h-125 m-auto items-center">
+      <p className="text-2xl mb-15">Welcome to todo list web app</p>
       <div>
-        <p>If you already have an account</p>
-        <button className={btnStyle} onClick={()=>navigate("/Login")}>Login</button>
-        <p>You are new here?</p>
-        <button className={btnStyle} onClick={()=>navigate("/Register")}>Register</button>
+        <p className="pl-1.5">
+          If you already have an account{" "}
+          <a className={btnStyle} onClick={() => navigate("/Login")}>
+            Login
+          </a>
+          <br />
+          <br />
+          You are new here?{" "}
+          <a className={btnStyle} onClick={() => navigate("/Register")}>
+            Register
+          </a>
+        </p>
       </div>
-    </>
+    </div>
   );
 }

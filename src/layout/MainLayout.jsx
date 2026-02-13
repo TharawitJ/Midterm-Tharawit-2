@@ -5,7 +5,7 @@ export default function MainLayout() {
   return (
     <>
       <Navbar />
-      <hr />
+      <hr className="text-gray-700 w-98/100 m-auto"/>
       <Outlet />
     </>
   );
